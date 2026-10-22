@@ -41,7 +41,7 @@ nav .links a:hover{color:#fff}
 .f{margin-bottom:16px}
 .f label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:500;color:var(--navy);margin-bottom:6px}
 .f label b{color:var(--purple)}
-select,input[type=number]{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;font:14px 'Poppins',sans-serif;color:var(--ink);background:#fff}
+select,input[type=number],input[type=text],input[type=tel]{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;font:14px 'Poppins',sans-serif;color:var(--ink);background:#fff}
 input[type=range]{width:100%;accent-color:var(--blue)}
 .mats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .mat{border:1px solid var(--line);border-radius:9px;padding:8px 4px;text-align:center;cursor:pointer;font-size:12px;background:#fff;color:var(--navy)}
@@ -59,6 +59,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 #price{font:800 clamp(26px,4vw,34px) 'Baloo 2',sans-serif;color:#8a5a00}
 #res.empty #price{font-size:16px;color:#a7afc9;font-weight:600}
 #det{font-size:12.5px;color:#7a6224}
+.gate{margin-top:14px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}.gate h3{font-size:18px;margin-bottom:4px}.gate p{margin:0 0 12px;font-size:13px;color:#5a6699}.gate input{margin-bottom:10px}
 .note{font-size:12px;color:#8892b0;margin-top:12px}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media(max-width:860px){.cards{grid-template-columns:1fr}}
@@ -73,6 +74,12 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:10px}
 summary{cursor:pointer;font-weight:600;color:var(--navy)}
 details p{margin:8px 0 0;color:#4a5578;font-size:14.5px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:640px){.gallery{grid-template-columns:repeat(2,1fr)}}
+.gallery img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;border:1px solid var(--line);display:block}
+.rev .stars{color:var(--amber);letter-spacing:2px;font-size:16px}
+.rev p{margin:8px 0 10px;font-size:14.5px;color:#4a5578}
+.rev b{color:var(--navy);font-size:14px}
 .contact{background:var(--navy);color:#fff;text-align:center}
 .contact h2{color:#fff}.contact p{color:var(--lilac);margin:0 auto 22px;max-width:480px}
 footer{text-align:center;padding:22px;font-size:12.5px;color:#8892b0}
@@ -82,7 +89,7 @@ footer{text-align:center;padding:22px;font-size:12.5px;color:#8892b0}
 
 <nav><div class="wrap">
   <a class="logo" href="#top">LD PRINT 3D</a>
-  <div class="links"><a href="#how">How it works</a><a href="#price-calc">Price estimate</a><a href="#materials">Materials</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></div>
+  <div class="links"><a href="#how">How it works</a><a href="#price-calc">Price estimate</a><a href="#materials">Materials</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></div>
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap">
@@ -119,6 +126,13 @@ footer{text-align:center;padding:22px;font-size:12.5px;color:#8892b0}
     </div>
     <div class="panel">
       <div id="res" class="empty"><small>Estimated price</small><div id="price">Add a file or weight to see a price</div><div id="det"></div></div>
+      <div class="gate" id="gate">
+        <h3>See your price</h3>
+        <p>Enter your name and mobile number to unlock the estimate. We use them only to follow up on your quote.</p>
+        <input type="text" id="cn" placeholder="Your name" autocomplete="name">
+        <input type="tel" id="cp" placeholder="10-digit mobile number" autocomplete="tel" inputmode="tel">
+        <button class="btn" id="unlock" style="width:100%">Show my estimate</button>
+      </div>
       <button class="btn" id="quote" style="width:100%;margin-top:14px" disabled>Request final quote on WhatsApp</button>
       <p class="note">This is a rough estimate from the model’s outer geometry. Real cost changes with orientation, supports, wall count and slicer settings. We confirm the exact price before printing anything.</p>
     </div>
@@ -152,8 +166,21 @@ footer{text-align:center;padding:22px;font-size:12.5px;color:#8892b0}
   <details><summary>How accurate is the online price?</summary><p>It is a rough range, usually close for simple parts. We always check your file and send a final price before we start printing.</p></details>
   <details><summary>How long does printing take?</summary><p>The calculator doesn’t show exact times, but small parts are often ready within a day or two. Larger parts and batches take longer. We confirm the timeline with your quote.</p></details>
   <details><summary>What is the maximum part size?</summary><p>It depends on our printers. If your part is large we can often split it into pieces and join them. Ask us before you design.</p></details>
-  <details><summary>Is my design kept private?</summary><p>Yes. The calculator reads your file only inside your own browser. Files you send us for a quote are used only for your order.</p></details>
+  <details><summary>Is my design kept private?</summary><p>Yes. The calculator reads your file only inside your own browser. The name and phone number you enter are saved so we can follow up on your quote, and are not shared with anyone else.</p></details>
   <details><summary>Can you design the part for me?</summary><p>Yes, send us a sketch, measurements or a broken sample and we can quote the design work separately.</p></details>
+</div></section>
+
+<section id="gallery" style="display:none;background:#fff"><div class="wrap">
+  <h2>Our work</h2>
+  <p class="lead">A few parts we’ve printed for customers.</p>
+  <div class="gallery" id="galleryGrid"></div>
+</div></section>
+
+<section id="reviews"><div class="wrap">
+  <h2>What customers say</h2>
+  <p class="lead">Read what people say about LD PRINT 3D on Google.</p>
+  <div class="cards" id="reviewCards"></div>
+  <p style="margin:22px 0 0"><a class="btn" id="gLink" target="_blank" rel="noopener">See our reviews on Google</a></p>
 </div></section>
 
 <section class="contact" id="contact"><div class="wrap">
@@ -170,10 +197,11 @@ const C={
   mat:{PLA:{n:"PLA",s:"Everyday",d:1.24,c:1200,f:18},PETG:{n:"PETG",s:"Tougher",d:1.27,c:1500,f:15},TPU:{n:"TPU",s:"Flexible",d:1.21,c:2200,f:8}}, // d=density g/cm³, c=₹ per kg, f=print speed g/hr
   q:{draft:1.3,standard:1,fine:.55},
   r:{elec:8,wear:10,lab:40,setup:30,margin:45,range:10,wall:1.2,min:60}, // ₹/hr, ₹ flat, % margin, % range, mm wall, ₹ minimum
-  wa:"918682902815" // WhatsApp number with country code, digits only
+  wa:"918682902815", // WhatsApp number with country code, digits only
+  lead:"https://script.google.com/macros/s/AKfycbxH101oeUA_eei1Uzc4biHupS8kZjnao6TgUdo4MVOtV4gVFyAc0xM6_76QO29xK4MR/exec" // paste your Google Apps Script web app URL here to save every enquiry to a Google Sheet
 };
 const $=i=>document.getElementById(i);
-let mat="PLA",vol=0,area=0,dims=null,fname="",last=null;
+let mat="PLA",vol=0,area=0,dims=null,fname="",last=null,unlocked=false,cust=null,ref="";
 
 Object.entries(C.mat).forEach(([k,m])=>{
   const d=document.createElement("div");d.className="mat"+(k===mat?" on":"");d.innerHTML=`<b>${m.n}</b>${m.s}`;
@@ -244,19 +272,58 @@ function calc(){
   const unit=w/1000*m.c+hrs*(r.elec+r.wear+r.lab);
   let p=Math.max((unit*qty+r.setup)*(1+r.margin/100),r.min);
   const lo=Math.round(p*(1-r.range/100)/5)*5,hi=Math.round(p*(1+r.range/100)/5)*5;
+  last={w,lo,hi,qty,hrs:hrs*qty,q:$("q").selectedOptions[0].text};
+  $("det").innerHTML=`<b>${w.toFixed(1)} g</b> per part · about <b>${(hrs*qty).toFixed(1)} hr</b> total print time`;
+  if(!unlocked){res.classList.add("empty");$("price").textContent="Enter your name and phone below to see the price";$("quote").disabled=true;return}
   res.classList.remove("empty");
   $("price").textContent=`₹${lo} – ₹${hi}`;
-  $("det").innerHTML=`<b>${w.toFixed(1)} g</b> per part · about <b>${(hrs*qty).toFixed(1)} hr</b> total print time`;
   $("quote").disabled=false;
-  last={w,lo,hi,qty,q:$("q").selectedOptions[0].text};
 }
 
+function sendLead(type){
+  if(!C.lead||!cust||!last)return;
+  const body={ref,type,time:new Date().toISOString(),name:cust.name,phone:cust.phone,file:fname,
+    size:dims?dims.map(x=>x.toFixed(1)).join(" x "):"",weight_g:+last.w.toFixed(1),material:mat,infill:$("inf").value,
+    quality:last.q,qty:last.qty,price_low:last.lo,price_high:last.hi};
+  fetch(C.lead,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(body)}).catch(()=>{});
+}
+$("unlock").onclick=()=>{
+  const n=$("cn").value.trim();
+  let ph=$("cp").value.replace(/\D/g,"");
+  if(ph.length===12&&ph.startsWith("91"))ph=ph.slice(2);
+  if(ph.length===11&&ph.startsWith("0"))ph=ph.slice(1);
+  if(n.length<2){alert("Please enter your name.");return}
+  if(!/^[6-9]\d{9}$/.test(ph)){alert("Please enter a valid 10-digit mobile number.");return}
+  if(!last){alert("Please upload your STL file or enter the part weight first.");return}
+  cust={name:n,phone:ph};
+  ref="LD-"+new Date().toISOString().slice(2,10).replace(/-/g,"")+"-"+Math.floor(100+Math.random()*900);
+  unlocked=true;$("gate").style.display="none";calc();sendLead("estimate");
+};
 $("quote").onclick=()=>{
-  if(!last)return;
-  const msg=`Hi LD PRINT 3D, I’d like a final quote.\n${fname?"File: "+fname+"\nSize: "+dims.map(x=>x.toFixed(1)).join(" x ")+" mm\n":""}Weight: ${last.w.toFixed(1)} g\nMaterial: ${mat}, Infill: ${$("inf").value}%, Quality: ${last.q}\nQuantity: ${last.qty}\nRough estimate shown: ₹${last.lo}–₹${last.hi}`;
+  if(!last||!cust)return;
+  sendLead("quote");
+  const msg=`Hi LD PRINT 3D, I’d like a final quote.\nRef: ${ref}\nName: ${cust.name}\nPhone: ${cust.phone}\n${fname?"File: "+fname+"\nSize: "+dims.map(x=>x.toFixed(1)).join(" x ")+" mm\n":""}Weight: ${last.w.toFixed(1)} g\nMaterial: ${mat}, Infill: ${$("inf").value}%, Quality: ${last.q}\nQuantity: ${last.qty}\nRough estimate shown: ₹${last.lo}–₹${last.hi}`;
   const url="https://wa.me/"+C.wa+"?text="+encodeURIComponent(msg);
   if(!window.open(url,"_blank"))location.href=url;
 };
+/* ---- Google reviews + photos (edit these lists) ---- */
+const GOOGLE="https://maps.app.goo.gl/1y89FJDfGBGrZmcL7";
+// Paste real reviews here, e.g. {name:"Customer name",stars:5,text:"Their review text"}
+const REVIEWS=[];
+// Add photo file names from an "images" folder, e.g. "images/print1.jpg"
+const PHOTOS=[];
+$("gLink").href=GOOGLE;
+if(!REVIEWS.length)$("reviewCards").style.display="none";
+REVIEWS.forEach(r=>{
+  const d=document.createElement("div");d.className="card rev";
+  d.innerHTML=`<div class="stars">${"★".repeat(r.stars||5)}</div><p></p><b></b>`;
+  d.querySelector("p").textContent="“"+r.text+"”";d.querySelector("b").textContent=r.name;
+  $("reviewCards").appendChild(d);
+});
+if(PHOTOS.length){
+  $("gallery").style.display="block";
+  PHOTOS.forEach(p=>{const i=document.createElement("img");i.src=p;i.alt="3D printed part by LD PRINT 3D";i.loading="lazy";$("galleryGrid").appendChild(i)});
+}
 calc();
 </script>
 </body>
