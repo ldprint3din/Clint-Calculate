@@ -79,9 +79,13 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin-bottom:10px}
 summary{cursor:pointer;font-weight:600;color:var(--navy)}
 details p{margin:8px 0 0;color:#4a5578;font-size:14.5px}
-.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-@media(max-width:640px){.gallery{grid-template-columns:repeat(2,1fr)}}
-.gallery img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;border:1px solid var(--line);display:block}
+.gallery{overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent)}
+.track{display:flex;width:max-content;animation:slide var(--d,40s) linear infinite}
+.gallery:hover .track{animation-play-state:paused}
+.gallery img{flex:none;width:230px;height:230px;object-fit:cover;border-radius:12px;border:1px solid var(--line);margin-right:14px;display:block}
+@media(max-width:640px){.gallery img{width:170px;height:170px}}
+@keyframes slide{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){.track{animation:none}.gallery{overflow-x:auto;-webkit-mask-image:none;mask-image:none}}
 .rev .stars{color:var(--amber);letter-spacing:2px;font-size:16px}
 .rev p{margin:8px 0 10px;font-size:14.5px;color:#4a5578}
 .rev b{color:var(--navy);font-size:14px}
@@ -391,10 +395,10 @@ const GOOGLE="https://maps.app.goo.gl/1y89FJDfGBGrZmcL7";
 const REVIEWS=[];
 // Add photo file names from an "images" folder, e.g. "images/print1.jpg"
 // Images: after you upload to GitHub, set base to the folder link (ending in /) and list the file names.
-const IMG={base:"",logo:"",cover:"",photos:[]}; // e.g. base:"https://USERNAME.github.io/REPO/", logo:"logo.png", cover:"cover.jpg", photos:["p1.jpg","p2.jpg", ...8 files]
-const PHOTOS=IMG.photos.map(x=>IMG.base+x);
-if(IMG.logo){$("logoImg").src=IMG.base+IMG.logo;$("logoImg").style.display="inline-block";$("fav").href=IMG.base+IMG.logo}
-if(IMG.cover)$("top").style.background=`linear-gradient(135deg,rgba(43,54,112,.88),rgba(56,71,133,.82),rgba(130,109,195,.78)),url("${IMG.base+IMG.cover}") center/cover`;
+const IMG={base:"https://raw.githubusercontent.com/ldprint3din/Clint-Calculate/main/images/",logo:"logo.jpeg",cover:"WhatsApp Image 2026-10-27 at 11.22.06 AM (10).jpeg",photos:["Image-1.jpeg", "WhatsApp Image 2026-10-27 at 11.22.06 AM (2).jpeg", "WhatsApp Image 2026-10-27 at 11.22.06 AM (3).jpeg", "WhatsApp Image 2026-10-27 at 11.22.06 AM (4).jpeg", "WhatsApp Image 2026-10-27 at 11.22.06 AM (5).jpeg", "WhatsApp Image 2026-10-27 at 11.22.06 AM (6).jpeg", "WhatsApp Image 2026-10-27 at 11.22.06 AM (7).jpeg", "WhatsApp Image 2026-10-27 at 11.22.06 AM (8).jpeg", "WhatsApp Image 2026-10-27 at 11.22.06 AM (9).jpeg", "WhatsApp Image 2026-10-27 at 11.22.06 AM.jpeg"]};
+const PHOTOS=IMG.photos.map(x=>encodeURI(IMG.base+x));
+if(IMG.logo){$("logoImg").src=encodeURI(IMG.base+IMG.logo);$("logoImg").style.display="inline-block";$("fav").href=encodeURI(IMG.base+IMG.logo)}
+if(IMG.cover)$("top").style.background=`linear-gradient(135deg,rgba(43,54,112,.88),rgba(56,71,133,.82),rgba(130,109,195,.78)),url("${encodeURI(IMG.base+IMG.cover)}") center/cover`;
 // Team: {name:"Name",role:"Role",photo:"images/name.jpg"}
 const TEAM=[];
 // Before/after: {before:"images/raw.jpg",after:"images/finished.jpg"}
@@ -409,14 +413,20 @@ REVIEWS.forEach(r=>{
 });
 if(PHOTOS.length){
   $("gallery").style.display="block";
-  PHOTOS.forEach(p=>{const i=document.createElement("img");i.src=p;i.alt="3D printed part by LD PRINT 3D";i.loading="lazy";$("galleryGrid").appendChild(i)});
+  const track=document.createElement("div");track.className="track";
+  // two identical sets make the loop seamless; short lists are repeated so one set always fills the width
+  const reps=Math.max(1,Math.ceil(8/PHOTOS.length));
+  for(let set=0;set<2;set++)for(let n=0;n<reps;n++)PHOTOS.forEach(p=>{
+    const i=document.createElement("img");i.src=p;i.alt=set?"":"3D printed part by LD PRINT 3D";if(set)i.setAttribute("aria-hidden","true");i.loading=set?"lazy":"eager";track.appendChild(i)});
+  track.style.setProperty("--d",Math.max(20,PHOTOS.length*reps*4)+"s");
+  $("galleryGrid").appendChild(track);
 }
 if(TEAM.length){$("team").style.display="block";TEAM.forEach(t=>{const d=document.createElement("div");d.className="card";d.innerHTML=(t.photo?`<img src="${t.photo}" alt="" loading="lazy">`:"")+"<h3></h3><p></p>";d.querySelector("h3").textContent=t.name;d.querySelector("p").textContent=t.role||"";$("teamGrid").appendChild(d)})}
 if(BEFORE_AFTER){$("ba").style.display="block";$("baB").src=BEFORE_AFTER.before;$("baA").src=BEFORE_AFTER.after;
   $("baR").oninput=e=>{const v=+e.target.value;$("baB").style.clipPath=`inset(0 ${100-v}% 0 0)`;$("baBox").style.setProperty("--p",v+"%")}}
 if("IntersectionObserver"in window){
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.1});
-  document.querySelectorAll(".card,.step,.explain div,details,.panel,.gallery img").forEach(el=>{el.classList.add("rv");io.observe(el)});
+  document.querySelectorAll(".card,.step,.explain div,details,.panel").forEach(el=>{el.classList.add("rv");io.observe(el)});
 }
 calc();
 </script>
